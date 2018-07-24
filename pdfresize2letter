@@ -1,0 +1,5 @@
+#!/bin/bash
+
+bnm=$(basename "$1" | cut -d. -f1)
+
+pdfjam --outfile $bnm-lettersize.pdf --paper letter $1
