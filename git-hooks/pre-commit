@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function error() {
+  echo "'$1' has trailing spaces.\n" >&2
+}
+
+git diff --cached --name-only | (while read f; do
+  ERROR=0
+  if grep -n '[[:space:]]$' "$f" ; then
+    error $f
+    ERROR=1
+  fi
+done; exit $ERROR)
+
+if [ $? -eq 0 -o "$IGNORE_WHITESPACE" ]; then
+  exit
+else
+  echo "if you know what you are doing, use 'IGNORE_WHITESPACE=1 git commit' or 'git commit --no-verify'"
+  exit 1
+fi
